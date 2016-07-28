@@ -68,6 +68,8 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.3'
 
+    compile 'org.mongodb.morphia:morphia:1.2.1'
+
     itestCompile 'commons-io:commons-io:2.4'
     itestCompile "org.apache.commons:commons-lang3:3.3.2"
     itestCompile group: 'junit', name: 'junit', version: '4.12'
