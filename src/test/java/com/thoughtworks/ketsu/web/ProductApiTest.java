@@ -34,4 +34,10 @@ public class ProductApiTest extends ApiSupport {
         final List<Map<String, Object>> errorList = post.readEntity(List.class);
         assertThat(errorList.size(), is(1));
     }
+
+    @Test
+    public void should_return_200_when_list_products(){
+        Response get = get("products");
+        assertThat(get.getStatus(), is(200));
+    }
 }
