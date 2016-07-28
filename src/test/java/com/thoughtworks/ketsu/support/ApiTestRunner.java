@@ -15,9 +15,6 @@ import java.util.List;
 public class ApiTestRunner extends InjectBasedRunner {
 
 
-    @Inject
-    DB db;
-
     public ApiTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }

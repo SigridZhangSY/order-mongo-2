@@ -15,8 +15,7 @@ import static java.util.Arrays.asList;
 
 public class DatabaseTestRunner extends InjectBasedRunner {
 
-    @Inject
-    DB db;
+
 
     public DatabaseTestRunner(final Class<?> clazz) throws InitializationError {
         super(clazz);

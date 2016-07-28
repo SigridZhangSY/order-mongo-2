@@ -9,7 +9,7 @@ public class ApiForTest extends ResourceConfig {
     public ApiForTest() {
         property(org.glassfish.jersey.server.ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, true);
         packages("com.thoughtworks.ketsu.web");
-        register(RoutesFeature.class);
+//        register(RoutesFeature.class);
 
         register(new AbstractBinder() {
             @Override

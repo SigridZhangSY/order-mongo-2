@@ -1,15 +1,12 @@
 package com.thoughtworks.ketsu.infrastructure.records;
 
 import com.google.inject.AbstractModule;
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-
-import java.net.UnknownHostException;
 
 public class MongoModels extends AbstractModule{
     @Override
