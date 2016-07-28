@@ -3,9 +3,11 @@ package com.thoughtworks.ketsu.support;
 import com.google.inject.AbstractModule;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.thoughtworks.ketsu.domain.product.Product;
 import org.junit.rules.TestRule;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
+import org.mongodb.morphia.Datastore;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.List;
 
 public class ApiTestRunner extends InjectBasedRunner {
 
+    @Inject
+    Datastore datastore;
 
     public ApiTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
@@ -25,6 +29,7 @@ public class ApiTestRunner extends InjectBasedRunner {
             try {
                 base.evaluate();
             } finally {
+                datastore.delete(datastore.createQuery(Product.class));
 
             }
         }
