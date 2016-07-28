@@ -1,19 +1,29 @@
 package com.thoughtworks.ketsu.domain.product;
 
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Property;
 
+@Entity("products")
 public class Product {
-
-    private String id;
+    @Id
+    private ObjectId id;
     private String name;
     private String description;
     private double price;
 
-    public Product(String id) {
-        this.id = id;
+    public Product(String name, String description, double price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
     }
 
-    public String getId() {
+    public Product(){
+
+    }
+
+    public ObjectId getId() {
         return id;
     }
 

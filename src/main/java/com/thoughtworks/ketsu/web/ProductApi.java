@@ -17,7 +17,6 @@ public class ProductApi {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postProduct(@Context Routes routes){
-        Product product = new Product("1");
-        return Response.created(routes.productUri(product)).build();
+        return Response.status(201).build();
     }
 }

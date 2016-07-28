@@ -10,9 +10,7 @@ time：
 
   1. return 201
 
-     - return 201 when create product — 5
-
-     - return uri when create product — 5
+     - return 201 when create product — 5 4
 
      - save and find product in product repository  — 15
 
@@ -22,7 +20,7 @@ time：
 
        ProductDao.findById)
 
-     - return 201 when create product with specified parameter —3
+     - return 201 and uri when create product with specified parameter —3
 
   2. return 400
 
