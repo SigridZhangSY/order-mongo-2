@@ -1,11 +1,15 @@
 package com.thoughtworks.ketsu.infrastructure.records;
 
 import com.google.inject.AbstractModule;
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
+import org.jongo.Jongo;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+
+import java.net.UnknownHostException;
 
 
 public class MongoModels extends AbstractModule{
@@ -23,15 +27,26 @@ public class MongoModels extends AbstractModule{
                 dbname
         );
 
+
+        MongoClient mongoClient = new MongoClient( new MongoClientURI(connectURL));
+
+
+        DB db = mongoClient.getDB("mongodb_store");
+//        bind(DB.class).toInstance(db);
+
+        //morphia
         final Morphia morphia = new Morphia();
-
-        // tell Morphia where to find your classes
-        // can be called multiple times with different packages or classes
+//         tell Morphia where to find your classes
+//         can be called multiple times with different packages or classes
         morphia.mapPackage("com.thoughtworks.ketsu.domain");
-
         // create the Datastore connecting to the default port on the local host
-        final Datastore datastore = morphia.createDatastore(new MongoClient(new MongoClientURI(connectURL)), "mongodb_store");
+        final Datastore datastore = morphia.createDatastore(mongoClient, "mongodb_store");
         datastore.ensureIndexes();
         bind(Datastore.class).toInstance(datastore);
+
+        //jongo
+        Jongo jongo = new Jongo(db);
+        bind(Jongo.class).toInstance(jongo);
+
     }
 }
