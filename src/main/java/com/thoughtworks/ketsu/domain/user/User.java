@@ -38,41 +38,42 @@ public class User implements Record{
     private String name;
 
     @MongoId
-    private ObjectId _id;
+    private ObjectId id;
 //
 //
     @Inject
     @JsonIgnore
     Jongo jongo;
 
-//    public Optional<Order> createOrder(Map<String, Object> info){
-//
-//        MongoCollection collection = jongo.getCollection("orders");
-//
-//        info.put("user_id", id.toString());
-//
-//        List<Map<String, Object>> items = (List<Map<String, Object>>) info.get("order_items");
-//        double total_price = 0;
-//        for (Map<String, Object> item : items){
-//            double price = productRepository.findById(item.get("product_id").toString()).get().getPrice();
-//            item.put("amount", price * Integer.valueOf(item.get("quantity").toString()));
-//            total_price += price;
-//        }
-//
-//        info.put("total_price", total_price);
-//        ObjectId orderId = new ObjectId();
-//        info.put("_id", orderId);
-//
-//        WriteResult result = collection.insert(info);
-//        Order order = collection.findOne(orderId).as(Order.class);
-//        if(order != null)
-//            injector.injectMembers(order);
-//        return Optional.ofNullable(order);
-//    }
+    public Optional<Order> createOrder(Map<String, Object> info){
+
+        MongoCollection collection = jongo.getCollection("orders");
+
+        info.put("user_id", id.toString());
+
+        List<Map<String, Object>> items = (List<Map<String, Object>>) info.get("order_items");
+        double total_price = 0;
+        for (Map<String, Object> item : items){
+            double price = productRepository.findById(item.get("product_id").toString()).get().getPrice();
+            double amount = price * Integer.valueOf(item.get("quantity").toString());
+            item.put("amount", amount);
+            total_price += amount;
+        }
+
+        info.put("total_price", total_price);
+        ObjectId orderId = new ObjectId();
+        info.put("_id", orderId);
+
+        WriteResult result = collection.insert(info);
+        Order order = collection.findOne(orderId).as(Order.class);
+        if(order != null)
+            injector.injectMembers(order);
+        return Optional.ofNullable(order);
+    }
 
 
     public ObjectId getId() {
-        return _id;
+        return id;
     }
 
     public String getName() {
@@ -90,7 +91,7 @@ public class User implements Record{
     @Override
     public Map<String, Object> toJson(Routes routes) {
         return new HashMap<String, Object>(){{
-            put("id", _id.toString());
+            put("id", id.toString());
             put("uri", routes.userUri(User.this));
             put("name", name);
         }};

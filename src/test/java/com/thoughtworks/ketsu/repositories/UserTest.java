@@ -27,10 +27,10 @@ public class UserTest {
 
     @Test
     public void should_save_and_find_order(){
-//        User user = userRepository.createUser(TestHelper.userMap("vvv")).get();
-//        Product product = productRepository.createProduct(TestHelper.productMap("apple")).get();
-//        Optional<Order> order = user.createOrder(TestHelper.orderMap(product.getId().toString()));
-//
-//        assertThat(order.isPresent(), is(true));
+        User user = userRepository.createUser(TestHelper.userMap("vvv")).get();
+        Product product = productRepository.createProduct(TestHelper.productMap("apple")).get();
+        Optional<Order> order = user.createOrder(TestHelper.orderMap(product.getId().toString()));
+
+        assertThat(order.isPresent(), is(true));
     }
 }
