@@ -49,6 +49,14 @@ public class UserApiTest extends ApiSupport{
         Response post = post("users/" + user.getId() + "/orders", map);
 
         assertThat(post.getStatus(), is(400));
-
     }
+
+    @Test
+    public void should_return_200_when_list_orders(){
+        User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+
+        Response get = get("users/" + user.getId() + "/orders/1");
+        assertThat(get.getStatus(), is(200));
+    }
+
 }

@@ -60,4 +60,10 @@ public class UserApi {
         System.out.println(routes);
         return Response.created(routes.orderUri(order)).build();
     }
+
+    @GET
+    @Path("orders/{orderId}")
+    public String listOrders(){
+        return "OK";
+    }
 }
