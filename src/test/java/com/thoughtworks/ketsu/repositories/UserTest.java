@@ -33,4 +33,13 @@ public class UserTest {
 
         assertThat(order.isPresent(), is(true));
     }
+
+    @Test
+    public void should_list_orders(){
+        User user = userRepository.createUser(TestHelper.userMap("vvv")).get();
+        Product product = productRepository.createProduct(TestHelper.productMap("apple")).get();
+        Order order = user.createOrder(TestHelper.orderMap(product.getId().toString())).get();
+
+        assertThat(user.listOrders().size(), is(1));
+    }
 }

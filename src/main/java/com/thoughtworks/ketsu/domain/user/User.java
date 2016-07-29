@@ -2,8 +2,10 @@ package com.thoughtworks.ketsu.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.FluentIterable;
 import com.google.inject.Injector;
 import com.mongodb.WriteResult;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
 import com.thoughtworks.ketsu.infrastructure.ParameterCheck;
@@ -12,6 +14,7 @@ import com.thoughtworks.ketsu.web.jersey.Routes;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
@@ -71,7 +74,12 @@ public class User implements Record{
         return Optional.ofNullable(order);
     }
 
+    public List<Order> listOrders(){
+        MongoCollection collection = jongo.getCollection("orders");
+        MongoCursor<Order> cursor = collection.find(String.format("{user_id:'" + id.toString() + "'}")).as(Order.class);
 
+        return FluentIterable.from(cursor).toList();
+    }
 
     public ObjectId getId() {
         return id;
