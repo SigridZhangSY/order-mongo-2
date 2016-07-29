@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.thoughtworks.ketsu.domain.product.Product;
+import org.jongo.Jongo;
 import org.junit.rules.TestRule;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
@@ -17,7 +18,7 @@ import java.util.List;
 public class ApiTestRunner extends InjectBasedRunner {
 
     @Inject
-    Datastore datastore;
+    Jongo jongo;
 
     public ApiTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
@@ -29,8 +30,7 @@ public class ApiTestRunner extends InjectBasedRunner {
             try {
                 base.evaluate();
             } finally {
-                datastore.delete(datastore.createQuery(Product.class));
-
+                jongo.getCollection("products").remove();
             }
         }
     };
