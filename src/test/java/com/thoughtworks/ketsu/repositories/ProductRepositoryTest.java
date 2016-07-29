@@ -31,4 +31,12 @@ public class ProductRepositoryTest {
         List<Product> productList = productRepository.listProducts();
         assertThat(productList.size(), is(1));
     }
+
+    @Test
+    public void should_find_product_by_id(){
+        Product product = productRepository.createProduct(TestHelper.productMap("asdf")).get();
+        Optional<Product> fetch = productRepository.findById(product.getId().toString());
+
+        assertThat(fetch.isPresent(), is(true));
+    }
 }

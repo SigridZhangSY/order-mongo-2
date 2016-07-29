@@ -3,6 +3,7 @@ package com.thoughtworks.ketsu.infrastructure.repository;
 import com.mongodb.*;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
+import com.thoughtworks.ketsu.web.exception.InvalidParameterException;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -11,6 +12,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,5 +68,17 @@ public class ProductRepositoryImpl implements ProductRepository {
         for(Product product: cursor)
             productList.add(product);
         return productList;
+    }
+
+    @Override
+    public Optional<Product> findById(String id) {
+        MongoCollection products = jongo.getCollection("products");
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(id);
+        }catch (Exception e){
+            throw new NotFoundException("can not find product by id");
+        }
+        return Optional.ofNullable(products.findOne(objectId).as(Product.class));
     }
 }
