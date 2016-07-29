@@ -7,6 +7,7 @@ import com.google.inject.Injector;
 import com.mongodb.WriteResult;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import com.thoughtworks.ketsu.domain.order.Order;
+import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
 import com.thoughtworks.ketsu.infrastructure.ParameterCheck;
 import com.thoughtworks.ketsu.infrastructure.records.Record;
@@ -19,6 +20,7 @@ import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +81,20 @@ public class User implements Record{
         MongoCursor<Order> cursor = collection.find(String.format("{user_id:'" + id.toString() + "'}")).as(Order.class);
 
         return FluentIterable.from(cursor).toList();
+    }
+
+    public Optional<Order> findOrder(String orderId){
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(orderId);
+        }catch (Exception e){
+            throw new NotFoundException("can not find order by id");
+        }
+        MongoCollection collection = jongo.getCollection("orders");
+        Order order = collection.findOne(objectId).as(Order.class);
+        if(order != null)
+            injector.injectMembers(order);
+        return Optional.ofNullable(order);
     }
 
     public ObjectId getId() {

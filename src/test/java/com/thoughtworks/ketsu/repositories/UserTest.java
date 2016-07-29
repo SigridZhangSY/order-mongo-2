@@ -42,4 +42,14 @@ public class UserTest {
 
         assertThat(user.listOrders().size(), is(1));
     }
+
+    @Test
+    public void should_find_order_by_id(){
+        User user = userRepository.createUser(TestHelper.userMap("vvv")).get();
+        Product product = productRepository.createProduct(TestHelper.productMap("apple")).get();
+        Order order = user.createOrder(TestHelper.orderMap(product.getId().toString())).get();
+
+        Optional<Order> fetch = user.findOrder(order.getId().toString());
+        assertThat(fetch.isPresent(), is(true));
+    }
 }
