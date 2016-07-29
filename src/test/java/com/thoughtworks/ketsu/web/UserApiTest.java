@@ -8,6 +8,7 @@ import com.thoughtworks.ketsu.domain.user.UserRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -76,6 +77,17 @@ public class UserApiTest extends ApiSupport{
         final Map<String, Object> map = get.readEntity(Map.class);
         assertThat(map.get("uri").toString(), is("/users/" + user.getId() + "/orders/" + order.getId()));
 
+    }
+
+    @Test
+    public void should_return_404_when_order_not_exist(){
+        User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+
+        Response get = get("users/" + user.getId() + "/orders/1");
+        assertThat(get.getStatus(), is(404));
+
+        Response get1 = get("users/" + user.getId() + "/orders/" + new ObjectId());
+        assertThat(get1.getStatus(), is(404));
     }
 
 }

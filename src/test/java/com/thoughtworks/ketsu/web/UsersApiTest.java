@@ -52,7 +52,7 @@ public class UsersApiTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_404_when_post_user_with_name_is_empty(){
+    public void should_return_404_when_user_not_exist(){
 
         Response get = get("users/1" );
         assertThat(get.getStatus(), is(404));
