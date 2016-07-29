@@ -2,6 +2,7 @@ package com.thoughtworks.ketsu.infrastructure.repository;
 
 import com.google.inject.Injector;
 import com.mongodb.WriteResult;
+import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.domain.user.UserRepository;
 import org.bson.types.ObjectId;
@@ -9,6 +10,7 @@ import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,6 +32,23 @@ public class UserRepositoryImpl implements UserRepository {
         User user = collection.findOne((ObjectId) info.get("_id")).as(User.class);
         //********* inject object into guice *******
         injector.injectMembers(user);
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public Optional<User> findUserById(String id) {
+        MongoCollection collection = jongo.getCollection("users");
+
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(id);
+        }catch (Exception e){
+            throw new NotFoundException("can not find user by id");
+        }
+
+        User user = collection.findOne(objectId).as(User.class);
+        injector.injectMembers(user);
+
         return Optional.ofNullable(user);
     }
 }

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(DatabaseTestRunner.class)
 public class UserRepositoryTest {
+
     @Inject
     UserRepository userRepository;
 
@@ -23,5 +24,12 @@ public class UserRepositoryTest {
     public void should_save_and_find_user(){
         Optional<User> user = userRepository.createUser(TestHelper.userMap("john"));
         assertThat(user.isPresent(), is(true));
+    }
+
+    @Test
+    public void should_find_user_by_id(){
+        User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+        Optional<User> fetch = userRepository.findUserById(user.getId().toString());
+        assertThat(fetch.isPresent(), is(true));
     }
 }
