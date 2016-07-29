@@ -71,7 +71,7 @@ public class UserApi {
     @GET
     @Path("orders/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String findOrder(){
-        return "Ok";
+    public Order findOrder(@PathParam("orderId") String orderId){
+        return user.findOrder(orderId).get();
     }
 }

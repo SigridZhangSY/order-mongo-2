@@ -66,11 +66,16 @@ public class UserApiTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_200_when_find_order(){
+    public void should_return_detail_when_find_order(){
         User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+        Product product = productRepository.createProduct(TestHelper.productMap("forOrder")).get();
+        Order order = user.createOrder(TestHelper.orderMap(product.getId().toString())).get();
 
-        Response get = get("users/" + user.getId() + "/orders/1");
+        Response get = get("users/" + user.getId() + "/orders/" + order.getId());
         assertThat(get.getStatus(), is(200));
+        final Map<String, Object> map = get.readEntity(Map.class);
+        assertThat(map.get("uri").toString(), is("/users/" + user.getId() + "/orders/" + order.getId()));
+
     }
 
 }
