@@ -6,6 +6,7 @@ import com.thoughtworks.ketsu.domain.product.ProductRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -65,5 +66,12 @@ public class ProductApiTest extends ApiSupport {
 
         final Map<String, Object> map = get.readEntity(Map.class);
         assertThat(map.get("uri"), is("/products/" + product.getId()));
+    }
+
+    @Test
+    public void should_return_404_when_product_not_exist(){
+        Response get = get("products/" + new ObjectId());
+
+        assertThat(get.getStatus(), is(404));
     }
 }

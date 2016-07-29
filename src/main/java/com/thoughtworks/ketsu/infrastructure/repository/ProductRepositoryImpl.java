@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.infrastructure.repository;
 
+import com.google.common.collect.FluentIterable;
 import com.mongodb.*;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
@@ -64,10 +65,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> listProducts() {
         MongoCollection collection = jongo.getCollection("products");
         MongoCursor<Product> cursor = collection.find().as(Product.class);
+        FluentIterable.from(cursor).toList();
         List<Product> productList = new ArrayList<>();
         for(Product product: cursor)
             productList.add(product);
-        return productList;
+        return  FluentIterable.from(cursor).toList();
     }
 
     @Override
