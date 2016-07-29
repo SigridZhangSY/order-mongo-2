@@ -40,4 +40,10 @@ public class ProductApi {
     public List<Product> listProducts(@Context ProductRepository productRepository){
         return productRepository.listProducts();
     }
+
+    @GET
+    @Path("{productId}")
+    public String findProductById(){
+        return "OK";
+    }
 }

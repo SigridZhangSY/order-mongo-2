@@ -28,6 +28,7 @@ public class ProductApiTest extends ApiSupport {
     @Test
     public void should_return_201_and_uri_when_post_product(){
         Response post = post("products", TestHelper.productMap("apple"));
+
         assertThat(post.getStatus(), is(201));
         assertThat(Pattern.matches(".*/products/.*", post.getLocation().toASCIIString()), is(true));
     }
@@ -37,6 +38,7 @@ public class ProductApiTest extends ApiSupport {
         Map<String, Object> map = TestHelper.productMap("apple");
         map.remove("name");
         Response post = post("products", map);
+
         assertThat(post.getStatus(), is(400));
         final List<Map<String, Object>> errorList = post.readEntity(List.class);
         assertThat(errorList.size(), is(1));
@@ -46,9 +48,18 @@ public class ProductApiTest extends ApiSupport {
     public void should_return_detail_when_list_products(){
         Product product = productRepository.createProduct(TestHelper.productMap("apple")).get();
         Response get = get("products");
+
         assertThat(get.getStatus(), is(200));
+
         final List<Map<String, Object>> resList = get.readEntity(List.class);
         assertThat(resList.size(), is(1));
         assertThat(resList.get(0).get("uri"), is("/products/" + product.getId()));
+    }
+
+    @Test
+    public void should_return_200_when_find_product_by_id(){
+        Response get = get("products/1");
+
+        assertThat(get.getStatus(), is(200));
     }
 }
