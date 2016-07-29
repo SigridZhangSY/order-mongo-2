@@ -1,13 +1,15 @@
 package com.thoughtworks.ketsu.domain.product;
 
 import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 
-@Entity("products")
+//@Entity("products")
 public class Product {
-    @Id
+//    @Id
+    @MongoId
     private ObjectId id;
     private String name;
     private String description;

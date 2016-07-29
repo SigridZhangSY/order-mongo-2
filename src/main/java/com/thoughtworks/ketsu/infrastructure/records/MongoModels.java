@@ -32,7 +32,7 @@ public class MongoModels extends AbstractModule{
 
 
         DB db = mongoClient.getDB("mongodb_store");
-//        bind(DB.class).toInstance(db);
+        bind(DB.class).toInstance(db);
 
         //morphia
         final Morphia morphia = new Morphia();

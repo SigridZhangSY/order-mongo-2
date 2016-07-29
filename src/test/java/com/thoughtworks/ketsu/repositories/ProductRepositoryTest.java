@@ -19,7 +19,7 @@ public class ProductRepositoryTest {
 
     @Test
     public void should_save_and_find_product(){
-        Optional fetch = productRepository.createProduct(TestHelper.productMap("apple"));
+        Optional fetch = productRepository.createProduct(TestHelper.productMap("ddddddd"));
         assertThat(fetch.isPresent(), is(true));
     }
 }
