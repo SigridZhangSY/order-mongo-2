@@ -17,6 +17,11 @@ public class TestHelper {
         }};
     }
 
+    public static Map<String, Object> userMap(String name){
+        return new HashMap<String, Object>(){{
+            put("name", name);
+        }};
+    }
 
     public static Map<String, Object> orderMap( ObjectId productId){
         return new HashMap<String, Object>(){{
@@ -31,4 +36,5 @@ public class TestHelper {
             put("order_items", items);
         }};
     }
+
 }

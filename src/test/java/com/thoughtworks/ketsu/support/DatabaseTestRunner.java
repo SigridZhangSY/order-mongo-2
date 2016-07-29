@@ -41,6 +41,7 @@ public class DatabaseTestRunner extends InjectBasedRunner {
                 base.evaluate();
             } finally {
                 jongo.getCollection("products").remove();
+                jongo.getCollection("users").remove();
             }
         }
     };
