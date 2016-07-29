@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.web;
 
+import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
 import com.thoughtworks.ketsu.domain.user.User;
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -52,11 +54,15 @@ public class UserApiTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_200_when_list_orders(){
+    public void should_return_detail_when_list_orders(){
         User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+        Product product = productRepository.createProduct(TestHelper.productMap("forOrder")).get();
+        Order order = user.createOrder(TestHelper.orderMap(product.getId().toString())).get();
 
-        Response get = get("users/" + user.getId() + "/orders/1");
+        Response get = get("users/" + user.getId() + "/orders");
         assertThat(get.getStatus(), is(200));
+        final List<Map<String, Object>> list = get.readEntity(List.class);
+        assertThat(list.size(), is(1));
     }
 
 }
