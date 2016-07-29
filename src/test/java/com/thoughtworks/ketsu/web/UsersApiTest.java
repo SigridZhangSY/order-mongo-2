@@ -5,6 +5,7 @@ import com.thoughtworks.ketsu.domain.user.UserRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,5 +49,15 @@ public class UsersApiTest extends ApiSupport{
 
         final Map<String, Object> map = get.readEntity(Map.class);
         assertThat(map.get("uri"), is("/users/" + user.getId().toString()));
+    }
+
+    @Test
+    public void should_return_404_when_post_user_with_name_is_empty(){
+
+        Response get = get("users/1" );
+        assertThat(get.getStatus(), is(404));
+
+        Response get1 = get("users/" + new ObjectId());
+        assertThat(get1.getStatus(), is(404));
     }
 }

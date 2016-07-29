@@ -42,6 +42,8 @@ public class UsersApi {
 
     @Path("{id}")
     public UserApi findUser(@PathParam("id") String userId){
-        return new UserApi(userRepository.findUserById(userId).get());
+        return new UserApi(userRepository.findUserById(userId).orElseThrow(
+                () -> new NotFoundException("can not find user by id")
+        ));
     }
 }

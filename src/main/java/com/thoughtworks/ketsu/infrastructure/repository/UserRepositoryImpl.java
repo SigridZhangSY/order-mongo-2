@@ -47,7 +47,8 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         User user = collection.findOne(objectId).as(User.class);
-        injector.injectMembers(user);
+        if(user != null)
+         injector.injectMembers(user);
 
         return Optional.ofNullable(user);
     }
