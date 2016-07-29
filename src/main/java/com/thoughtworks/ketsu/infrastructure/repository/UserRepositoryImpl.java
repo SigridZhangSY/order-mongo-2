@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.infrastructure.repository;
 
+import com.google.inject.Injector;
 import com.mongodb.WriteResult;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.domain.user.UserRepository;
@@ -16,13 +17,19 @@ public class UserRepositoryImpl implements UserRepository {
     @Inject
     Jongo jongo;
 
+    @Inject
+    Injector injector;
+
     @Override
     public Optional<User> createUser(Map<String, Object> info) {
 
         MongoCollection collection = jongo.getCollection("users");
         info.put("_id", new ObjectId());
+
         WriteResult result = collection.insert(info);
         User user = collection.findOne((ObjectId) info.get("_id")).as(User.class);
+        //********* inject object into guice *******
+        injector.injectMembers(user);
         return Optional.ofNullable(user);
     }
 }
