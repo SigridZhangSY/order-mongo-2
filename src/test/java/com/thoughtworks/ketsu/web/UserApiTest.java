@@ -65,4 +65,12 @@ public class UserApiTest extends ApiSupport{
         assertThat(list.size(), is(1));
     }
 
+    @Test
+    public void should_return_200_when_find_order(){
+        User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+
+        Response get = get("users/" + user.getId() + "/orders/1");
+        assertThat(get.getStatus(), is(200));
+    }
+
 }

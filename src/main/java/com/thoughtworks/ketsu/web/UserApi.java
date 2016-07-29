@@ -67,4 +67,11 @@ public class UserApi {
     public List<Order> listOrders(){
         return user.listOrders();
     }
+
+    @GET
+    @Path("orders/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String findOrder(){
+        return "Ok";
+    }
 }
