@@ -31,4 +31,11 @@ public class UsersApiTest extends ApiSupport{
         Response post = post("users", new HashMap<String, Object>());
         assertThat(post.getStatus(), is(400));
     }
+
+    @Test
+    public void should_return_200_when_find_user_by_id(){
+
+        Response get = get("users/1");
+        assertThat(get.getStatus(), is(200));
+    }
 }

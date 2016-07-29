@@ -6,9 +6,7 @@ import com.thoughtworks.ketsu.infrastructure.ParameterCheck;
 import com.thoughtworks.ketsu.web.exception.InvalidParameterException;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,5 +38,12 @@ public class UsersApi {
 
         User user = userRepository.createUser(info).get();
         return Response.created(routes.userUri(user)).build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String findUser(){
+        return "OK";
     }
 }
