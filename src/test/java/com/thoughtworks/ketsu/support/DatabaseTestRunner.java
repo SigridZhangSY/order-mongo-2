@@ -39,7 +39,7 @@ public class DatabaseTestRunner extends InjectBasedRunner {
             try {
                 base.evaluate();
             } finally {
-//                datastore.delete(datastore.createQuery(Product.class));
+                datastore.delete(datastore.createQuery(Product.class));
             }
         }
     };

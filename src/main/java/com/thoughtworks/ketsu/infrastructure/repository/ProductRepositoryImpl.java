@@ -1,18 +1,18 @@
 package com.thoughtworks.ketsu.infrastructure.repository;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.WriteConcern;
-import com.mongodb.WriteResult;
+import com.mongodb.*;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -56,5 +56,15 @@ public class ProductRepositoryImpl implements ProductRepository {
 //        Key<Product> productKey = datastore.save(product);
 //        Product fetch = datastore.get(Product.class, productKey.getId());
 //        return Optional.ofNullable(fetch);
+    }
+
+    @Override
+    public List<Product> listProducts() {
+        MongoCollection collection = jongo.getCollection("products");
+        MongoCursor<Product> cursor = collection.find().as(Product.class);
+        List<Product> productList = new ArrayList<>();
+        for(Product product: cursor)
+            productList.add(product);
+        return productList;
     }
 }
