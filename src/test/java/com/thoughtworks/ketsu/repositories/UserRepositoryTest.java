@@ -22,7 +22,7 @@ public class UserRepositoryTest {
 
     @Test
     public void should_save_and_find_user(){
-        Optional<User> user = userRepository.createUser(TestHelper.userMap("john"));
+        Optional<User> user =  userRepository.createUser(TestHelper.userMap("john"));
         assertThat(user.isPresent(), is(true));
     }
 

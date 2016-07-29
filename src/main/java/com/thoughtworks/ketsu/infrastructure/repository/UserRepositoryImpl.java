@@ -2,10 +2,12 @@ package com.thoughtworks.ketsu.infrastructure.repository;
 
 import com.google.inject.Injector;
 import com.mongodb.WriteResult;
+import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.domain.user.UserRepository;
 import org.bson.types.ObjectId;
+import org.jongo.FindOne;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
@@ -28,10 +30,16 @@ public class UserRepositoryImpl implements UserRepository {
         MongoCollection collection = jongo.getCollection("users");
         info.put("_id", new ObjectId());
 
-        WriteResult result = collection.insert(info);
-        User user = collection.findOne((ObjectId) info.get("_id")).as(User.class);
+        WriteResult result = collection.save(info);
+
+        FindOne res = collection.findOne((ObjectId) result.getUpsertedId());
+
+//        User newUser = new User();
+        User user = res.as(User.class);
         //********* inject object into guice *******
         injector.injectMembers(user);
+
+//        user.testInject();
         return Optional.ofNullable(user);
     }
 

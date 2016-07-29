@@ -31,7 +31,7 @@ public class ApiTestRunner extends InjectBasedRunner {
                 base.evaluate();
             } finally {
                 jongo.getCollection("products").remove();
-                jongo.getCollection("users").remove();
+//                jongo.getCollection("users").remove();
             }
         }
     };

@@ -1,24 +1,33 @@
 package com.thoughtworks.ketsu.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thoughtworks.ketsu.infrastructure.records.Record;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 import org.bson.types.ObjectId;
+import org.jongo.Jongo;
 import org.jongo.marshall.jackson.oid.MongoId;
+import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
 //@Entity("products")
 public class Product implements Record{
 //    @Id
+
+
     @MongoId
     private ObjectId id;
     private String name;
     private String description;
     private double price;
+
+//    @Inject
+//    Jongo jongo;
 
     public Product(String name, String description, double price) {
         this.name = name;

@@ -1,6 +1,7 @@
 package com.thoughtworks.ketsu.infrastructure.repository;
 
 import com.google.common.collect.FluentIterable;
+import com.google.inject.Injector;
 import com.mongodb.*;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.product.ProductRepository;
@@ -34,9 +35,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         //use jongo to save and find
         MongoCollection collection = jongo.getCollection("products");
-        info.put("_id", new ObjectId());
+//        info.put("_id", new ObjectId());
         WriteResult result = collection.insert(info);
-        Product fetch = collection.findOne((ObjectId)info.get("_id")).as(Product.class);
+//        Product fetch = collection.findOne((ObjectId)info.get("_id")).as(Product.class);
+        Product fetch = collection.findOne().as(Product.class);
+
         return Optional.ofNullable(fetch);
 
         //test to get id after insert
