@@ -1,5 +1,7 @@
 package com.thoughtworks.ketsu.web;
 
+import com.thoughtworks.ketsu.domain.product.Product;
+import com.thoughtworks.ketsu.domain.product.ProductRepository;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.domain.user.UserRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
@@ -11,6 +13,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -21,10 +24,16 @@ public class UserApiTest extends ApiSupport{
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    ProductRepository productRepository;
+
     @Test
-    public void should_return_201_when_post_order(){
+    public void should_return_201_and_uri__when_post_order(){
         User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
-        Response post = post("users/" + user.getId() + "/orders", new HashMap<String, Object>());
+        Product product = productRepository.createProduct(TestHelper.productMap("forOrder")).get();
+        Response post = post("users/" + user.getId() + "/orders", TestHelper.orderMap(product.getId().toString()));
         assertThat(post.getStatus(), is(201));
+        assertThat(Pattern.matches(".*/orders/.*", post.getLocation().toASCIIString()), is(true));
+
     }
 }
