@@ -1,13 +1,17 @@
 package com.thoughtworks.ketsu.web;
 
+import com.thoughtworks.ketsu.domain.user.User;
+import com.thoughtworks.ketsu.domain.user.UserRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -15,6 +19,9 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(ApiTestRunner.class)
 public class UsersApiTest extends ApiSupport{
+
+    @Inject
+    UserRepository userRepository;
 
     @Test
     public void should_return_201_and_uri_when_post_user(){
@@ -33,9 +40,13 @@ public class UsersApiTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_200_when_find_user_by_id(){
+    public void should_return_detail_when_find_user_by_id(){
+        User user = userRepository.createUser(TestHelper.userMap("xxx")).get();
+        Response get = get("users/" + user.getId().toString());
 
-        Response get = get("users/1");
         assertThat(get.getStatus(), is(200));
+
+        final Map<String, Object> map = get.readEntity(Map.class);
+        assertThat(map.get("uri"), is("/users/" + user.getId().toString()));
     }
 }

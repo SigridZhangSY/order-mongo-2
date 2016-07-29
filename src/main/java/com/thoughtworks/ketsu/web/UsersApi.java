@@ -40,10 +40,8 @@ public class UsersApi {
         return Response.created(routes.userUri(user)).build();
     }
 
-    @GET
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String findUser(){
-        return "OK";
+    public UserApi findUser(@PathParam("id") String userId){
+        return new UserApi(userRepository.findUserById(userId).get());
     }
 }
